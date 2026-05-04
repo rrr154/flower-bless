@@ -1,0 +1,317 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Buket Doa & Pesan Langit ✨</title>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,600;1,400&family=Lora:ital,wght@0,400;1,400&family=Caveat:wght@400;600&display=swap" rel="stylesheet"/>
+    <style>
+        :root {
+            --sky-blue: #dcedf1;
+            --cream: #fdf6ec;
+            --blush: #e8c4b0;
+            --mocha: #8b6355;
+            --deep: #4a3728;
+            --dusty: #c49a82;
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+
+        body {
+            background: linear-gradient(to bottom, var(--sky-blue) 0%, var(--cream) 100%);
+            font-family: 'Lora', serif;
+            color: var(--deep);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            overflow-x: hidden;
+            padding: 40px 20px;
+            position: relative;
+        }
+
+        /* Tekstur Grain (Efek graduation.html) */
+        body::before {
+            content: '';
+            position: fixed;
+            inset: 0;
+            background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");
+            pointer-events: none;
+            z-index: 1000;
+            opacity: 0.5;
+        }
+
+        /* Animasi Awan */
+        .cloud {
+            position: absolute;
+            background: rgba(255, 255, 255, 0.8);
+            border-radius: 50px;
+            z-index: 1;
+            filter: blur(10px);
+            animation: moveClouds linear infinite;
+        }
+
+        @keyframes moveClouds {
+            from { transform: translateX(-250px); }
+            to { transform: translateX(110vw); }
+        }
+
+        .header { text-align: center; margin-bottom: 40px; z-index: 10; }
+        .header h1 { font-family: 'Playfair Display', serif; font-size: 2.5rem; font-style: italic; color: var(--mocha); }
+
+        .main-layout {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 40px;
+            max-width: 1000px;
+            width: 100%;
+            z-index: 10;
+        }
+
+        /* Visual Area */
+        .bouquet-box {
+            position: relative;
+            width: 280px;
+            height: 280px;
+            background: rgba(255, 255, 255, 0.2);
+            border: 2px dashed white;
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .flower { position: absolute; font-size: 2.2rem; cursor: pointer; transition: all 0.5s; z-index: 20; }
+
+        .vase-container { position: relative; text-align: center; margin-top: 20px; }
+        .vase-icon { font-size: 5rem; position: relative; z-index: 5; }
+        .flowers-in-vase {
+            position: absolute;
+            bottom: 60px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 140px;
+            display: flex;
+            flex-wrap: wrap-reverse;
+            justify-content: center;
+            z-index: 4;
+        }
+
+        /* Prayer Card */
+        .prayer-card {
+            background: rgba(255, 251, 244, 0.8);
+            border: 1px solid var(--blush);
+            width: 100%;
+            max-width: 400px;
+            height: 450px;
+            padding: 25px;
+            overflow-y: auto;
+            border-radius: 4px;
+            backdrop-filter: blur(5px);
+            box-shadow: 0 10px 25px rgba(139,99,85,0.1);
+        }
+
+        .prayer-item {
+            margin-bottom: 15px;
+            padding-bottom: 10px;
+            border-bottom: 1px solid rgba(232, 196, 176, 0.3);
+            animation: fadeIn 0.5s forwards;
+        }
+
+        /* Clue Text */
+        #clue-text {
+            margin-top: 20px;
+            font-family: 'Caveat';
+            font-size: 1.4rem;
+            color: var(--mocha);
+            display: none;
+            animation: pulse 2s infinite;
+        }
+
+        /* Envelope - Tombol ini tidak akan hilang setelah modal ditutup */
+        #envelope-btn {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            font-size: 4rem;
+            cursor: pointer;
+            display: none;
+            z-index: 100;
+            filter: drop-shadow(0 5px 15px rgba(0,0,0,0.1));
+            animation: bounce 2s infinite;
+            transition: transform 0.3s ease;
+        }
+
+        #envelope-btn:hover { transform: scale(1.1); }
+
+        /* Modal & Letter */
+        .modal {
+            position: fixed;
+            inset: 0;
+            background: rgba(74, 55, 40, 0.5);
+            display: none;
+            justify-content: center;
+            align-items: center;
+            z-index: 200;
+            backdrop-filter: blur(4px);
+        }
+
+        .letter {
+            background: #fffdfa;
+            width: 85%;
+            max-width: 450px;
+            padding: 40px;
+            border-radius: 2px;
+            position: relative;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.2);
+            animation: fadeUp 0.5s ease;
+        }
+
+        /* Animations */
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+        @keyframes fadeUp { from { opacity: 0; transform: translateY(30px); } to { opacity: 1; transform: translateY(0); } }
+        @keyframes pulse { 0%, 100% { opacity: 0.5; } 50% { opacity: 1; } }
+        @keyframes bounce { 0%, 20%, 50%, 80%, 100% {transform: translateY(0);} 40% {transform: translateY(-10px);} 60% {transform: translateY(-5px);} }
+
+        .close-btn { position: absolute; top: 10px; right: 15px; cursor: pointer; font-size: 1rem; color: var(--dusty); font-weight: bold; }
+    </style>
+</head>
+<body>
+
+    <div class="cloud" style="width: 200px; height: 60px; top: 15%; animation-duration: 30s;"></div>
+    <div class="cloud" style="width: 150px; height: 40px; top: 30%; animation-duration: 40s; animation-delay: -5s;"></div>
+
+    <div class="header">
+        <h1>Untaian Doa di Langit</h1>
+        <p style="font-family: 'Caveat'; font-size: 1.3rem; color: var(--dusty);">Klik bunga untuk mengumpulkan harapan</p>
+    </div>
+
+    <div class="main-layout">
+        <div class="visual-area">
+            <div class="bouquet-box" id="bouquet"></div>
+            <div class="vase-container">
+                <div class="flowers-in-vase" id="vaseTarget"></div>
+                <div class="vase-icon">🏺</div>
+                <div id="clue-text">Ada pesan baru di pojok bawah... ✨</div>
+            </div>
+        </div>
+
+        <div class="prayer-card" id="prayerContainer">
+            <div style="text-align: center; color: var(--dusty); margin-top: 100px; font-style: italic;">Kotak doa masih kosong...</div>
+        </div>
+    </div>
+
+    <div id="envelope-btn" onclick="openLetter()">✉️</div>
+
+    <div class="modal" id="letterModal">
+        <div class="letter">
+            <span class="close-btn" onclick="closeLetter()">✕ TUTUP</span>
+            <h2 style="font-family: 'Playfair Display'; margin-bottom: 20px; color: var(--mocha);">,</h2>
+            
+            <p style="line-height: 1.8; font-size: 1.05rem;">
+                sukses selalu ya,semoga kamu selalu didampingi kebaikan,tetap menjadi kamu yang sekarang ya. <br><br>
+                I have a Confession for u,I can't say that I have feelings for you, because in fact every day I can still live my days as usual without having to think about you, but yang selalu bikin beda aku selalu berharap dalam diamnya kamu sedang tertawa kecil karena candaan di rumah, senyum karena reels instagram ya kamu tonton sendiri,dan itu cukup buat bikin aku bisa menjalani hari hari ku
+. <br><br>
+                Semoga kedepanya kamu selalu menemukan rumah rumah yang nyaman ya, yang hangat dan memeluk mu,
+selalu jaga diri ya ca kedepanya, hidup ga lagi sama,laki laki udah semakin jarang yang bener. semoga kamu tetap menjadi kamu yang sekarang,beautiful as you are, kind no matter how you are, Aamiin
+            </p>
+
+            <div style="margin-top: 30px; font-family: 'Caveat'; font-size: 1.5rem; text-align: right; color: var(--dusty);">
+                — r
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const prayers = [
+            "Semoga nasimu selalu hangat, bantalmu selalu dingin, sinyalmu selalu penuh, bateraimu tidak cepat habis.",
+            "Semoga hujan turun setelah kamu sampai, semoga panas tidak mengganggu aktivitasmu.",
+            "Semoga tidurmu selalu nyenyak, bangunmu tidak pernah berat, hatimu selalu ringan, pikiranmu selalu tenang, lelahmu cepat reda, usahamu tidak sia-sia.",
+            "Semoga perjalananmu selalu aman, selalu menemukan jalan pulang.",
+            "Semoga kamu tidak pernah merasa sendirian, harapanmu selalu hidup.",
+            "Semoga tangismu tidak pernah terlalu sesak.",
+            "Semoga sorot matahari senja selalu menyembuhkanmu.",
+            "Semoga jalan sepimu selalu terasa damai.",
+            "Semoga bangunmu tidak membawa sisa sedih semalam.",
+            "Semoga pakaianmu selalu nyaman dipakai.",
+            "Semoga diammu selalu dimengerti.",
+            "Semoga bahumu tidak sering menahan beban sendiri.",
+            "Semoga lelahmu selalu menemukan istirahat yang layak, pagi tidak pernah membuatmu ingin menyerah.",
+            "Semoga hari esok tidak pernah menakutkan."
+        ];
+
+        const flowersIcon = ['🌸', '🌷', '🌹', '🌺', '🌻', '🌼'];
+        const bouquet = document.getElementById('bouquet');
+        const prayerContainer = document.getElementById('prayerContainer');
+        const vaseTarget = document.getElementById('vaseTarget');
+        const clueText = document.getElementById('clue-text');
+        const envBtn = document.getElementById('envelope-btn');
+        const letterModal = document.getElementById('letterModal');
+        
+        let indexDoa = 0;
+
+        function init() {
+            prayers.forEach((_, i) => {
+                const f = document.createElement('div');
+                f.className = 'flower';
+                f.innerHTML = flowersIcon[i % flowersIcon.length];
+                const angle = Math.random() * Math.PI * 2;
+                const dist = Math.random() * 80 + 10;
+                f.style.left = `calc(50% + ${Math.cos(angle) * dist}px - 15px)`;
+                f.style.top = `calc(50% + ${Math.sin(angle) * dist}px - 15px)`;
+                f.onclick = (e) => petik(e);
+                bouquet.appendChild(f);
+            });
+        }
+
+        function petik(e) {
+            if (indexDoa >= prayers.length) return;
+            const el = e.target;
+            el.style.pointerEvents = 'none';
+
+            const vRect = document.querySelector('.vase-icon').getBoundingClientRect();
+            const eRect = el.getBoundingClientRect();
+            
+            el.style.transition = 'all 0.8s cubic-bezier(0.5, 0, 0.5, 1)';
+            el.style.transform = `translate(${vRect.left - eRect.left + 20}px, ${vRect.top - eRect.top - 40}px) scale(0.4)`;
+            el.style.opacity = '0';
+
+            setTimeout(() => {
+                el.remove();
+                const vFlower = document.createElement('div');
+                vFlower.innerHTML = el.innerHTML;
+                vFlower.style.fontSize = '1.4rem';
+                vFlower.style.margin = '-4px';
+                vFlower.style.animation = 'fadeIn 0.5s forwards';
+                vaseTarget.appendChild(vFlower);
+
+                if (indexDoa === 0) prayerContainer.innerHTML = '';
+                const item = document.createElement('div');
+                item.className = 'prayer-item';
+                item.innerHTML = `<span style="font-family:'Playfair Display'; color:var(--mocha); font-weight:bold;">${indexDoa + 1}.</span> ${prayers[indexDoa]}`;
+                prayerContainer.prepend(item);
+                
+                indexDoa++;
+
+                if (indexDoa === prayers.length) {
+                    clueText.style.display = 'block';
+                    envBtn.style.display = 'block'; // Munculkan amplop
+                }
+            }, 800);
+        }
+
+        // Fungsi khusus untuk buka dan tutup agar tombol amplop tidak terganggu
+        function openLetter() {
+            letterModal.style.display = 'flex';
+        }
+
+        function closeLetter() {
+            letterModal.style.display = 'none';
+            // Tombol envBtn tidak disembunyikan di sini, jadi tetap ada di pojok
+        }
+
+        init();
+    </script>
+</body>
+</html>
